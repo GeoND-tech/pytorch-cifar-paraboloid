@@ -1,0 +1,5 @@
+geond.tech/models/dla.pth
+geond.tech/models/dla_paraboloid.pth
+geond.tech/models/dla_paraconv.pth
+geond.tech/models/dla_paraconv_half.pth
+geond.tech/models/dla_paraconv_quarter.pth
