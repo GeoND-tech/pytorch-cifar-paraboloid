@@ -15,7 +15,7 @@ python main.py
 python main.py --resume --lr=0.01
 ```
 
-## Accuracy
+## Training Loss and Accuracy
 |   Model           | Training Loss        | Accuracy |
 | ----------------- | -------------        | -------- |
 | [DLA] (400 epochs)                  | 0.001210       | 96.03% |
