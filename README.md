@@ -9,7 +9,7 @@ Paraboloid neuron demonstration for [PyTorch](http://pytorch.org/) on the CIFAR1
 ```
 pip install -r requirements.txt
 ```
-- Download the pretrained models (optional) by running
+- Download the pre-trained models (optional) by running
 ```
 wget -i models.txt -P checkpoint
 ```
