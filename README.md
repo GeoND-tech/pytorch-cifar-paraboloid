@@ -7,6 +7,7 @@ Paraboloid neuron demonstration for [PyTorch](http://pytorch.org/) on the CIFAR1
 - Install the rest of the requirements by running:
 ```
 pip install -r requirements.txt
+```
 
 ## Training
 ```
