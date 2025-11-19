@@ -4,7 +4,7 @@ Paraboloid neuron demonstration for [PyTorch](http://pytorch.org/) on the CIFAR1
 
 ## Requirements
 - Linux only
-- Python 3.9+
+- Python 3.9+, use of a virtual environment recommended
 - Install the rest of the requirements by running:
 ```
 pip install -r requirements.txt
