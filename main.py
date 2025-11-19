@@ -14,15 +14,23 @@ import argparse
 from models import *
 from utils import progress_bar
 
+try:
+    import geondpt as gpt
+except ImportError:
+    import geondptfree as gpt
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
+parser.add_argument('--epochs', default=400, type=int, help='max number of epochs')
+parser.add_argument('--eval', type=str, help='filename to evaluate')
+parser.add_argument('--model', type=str, required=True, help='model to use')
 parser.add_argument('--resume', '-r', action='store_true',
                     help='resume from checkpoint')
 args = parser.parse_args()
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-best_acc = 0  # best test accuracy
+best_acc = 0.  # best test accuracy
+acc = 0.
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
 
 # Data
@@ -54,40 +62,42 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer',
 
 # Model
 print('==> Building model..')
-# net = VGG('VGG19')
-# net = ResNet18()
-# net = PreActResNet18()
-# net = GoogLeNet()
-# net = DenseNet121()
-# net = ResNeXt29_2x64d()
-# net = MobileNet()
-# net = MobileNetV2()
-# net = DPN92()
-# net = ShuffleNetG2()
-# net = SENet18()
-# net = ShuffleNetV2(1)
-# net = EfficientNetB0()
-# net = RegNetX_200MF()
-net = SimpleDLA()
+
+
+models={
+    'dla' : DLA,
+    'dla_paraboloid' : DLA_paraboloid,
+    'dla_paraconv' : DLA_paraconv,
+    'dla_paraconv_half' : DLA_paraconv_half,
+    'dla_paraconv_quarter': DLA_paraconv_quarter,
+}
+
+net = models[args.model]()
+
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net)
     cudnn.benchmark = True
 
+criterion = nn.CrossEntropyLoss()
+#optimizer = optim.SGD(net.parameters(), lr=args.lr,
+#                      momentum=0.9, weight_decay=5e-4)
+optimizer = gpt.GeoNDSGD(net.parameters(), lr=args.lr,
+                      momentum=0.9, weight_decay=5e-4, nesterov = True)
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
+
 if args.resume:
     # Load checkpoint.
     print('==> Resuming from checkpoint..')
     assert os.path.isdir('checkpoint'), 'Error: no checkpoint directory found!'
-    checkpoint = torch.load('./checkpoint/ckpt.pth')
+    checkpoint = torch.load('./checkpoint/ckpt.pth', weights_only=True)
+    #checkpoint = torch.load('./checkpoint/ckpt.pth')
     net.load_state_dict(checkpoint['net'])
     best_acc = checkpoint['acc']
     start_epoch = checkpoint['epoch']
-
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr=args.lr,
-                      momentum=0.9, weight_decay=5e-4)
-scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
-
+    optimizer.load_state_dict(checkpoint['optimizer'])
+    scheduler.load_state_dict(checkpoint['scheduler'])
+    print(scheduler.get_last_lr())
 
 # Training
 def train(epoch):
@@ -109,12 +119,13 @@ def train(epoch):
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
 
-        progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
+        progress_bar(batch_idx, len(trainloader), 'Loss: %.6f | Acc: %.3f%% (%d/%d)'
                      % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
 
 
 def test(epoch):
     global best_acc
+    global acc
     net.eval()
     test_loss = 0
     correct = 0
@@ -130,25 +141,65 @@ def test(epoch):
             total += targets.size(0)
             correct += predicted.eq(targets).sum().item()
 
-            progress_bar(batch_idx, len(testloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
+            progress_bar(batch_idx, len(testloader), 'Loss: %.6f | Acc: %.3f%% (%d/%d)'
                          % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
+            acc = 100.*correct/total
 
+
+
+def evaltrain(epoch):
+    global best_acc
+    global acc
+    net.eval()
+    test_loss = 0
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for batch_idx, (inputs, targets) in enumerate(trainloader):
+            inputs, targets = inputs.to(device), targets.to(device)
+            outputs = net(inputs)
+            loss = criterion(outputs, targets)
+
+            test_loss += loss.item()
+            _, predicted = outputs.max(1)
+            total += targets.size(0)
+            correct += predicted.eq(targets).sum().item()
+
+            progress_bar(batch_idx, len(trainloader), 'Loss: %.6f | Acc: %.3f%% (%d/%d)'
+                         % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
+            acc = 100.*correct/total
+
+
+if (args.eval):
+    print('==> Evaluating..')
+    assert os.path.isdir('checkpoint'), 'Error: no checkpoint directory found!'
+    checkpoint = torch.load('./checkpoint/'+args.eval, weights_only=True)
+    #checkpoint = torch.load('./checkpoint/'+args.eval)
+    net.load_state_dict(checkpoint['net'])
+    start_epoch = checkpoint['epoch']
+    print("Loss on training set:")
+    evaltrain(start_epoch)
+    print("Accuracy on test set:")
+    test(start_epoch)
+    quit()
+
+
+
+for epoch in range(start_epoch, args.epochs):
+    train(epoch)
+    test(epoch)
+    scheduler.step()
     # Save checkpoint.
-    acc = 100.*correct/total
     if acc > best_acc:
         print('Saving..')
         state = {
             'net': net.state_dict(),
             'acc': acc,
-            'epoch': epoch,
+            'epoch': epoch+1,
+            'optimizer': optimizer.state_dict(),
+            'scheduler': scheduler.state_dict(),
         }
         if not os.path.isdir('checkpoint'):
             os.mkdir('checkpoint')
         torch.save(state, './checkpoint/ckpt.pth')
         best_acc = acc
-
-
-for epoch in range(start_epoch, start_epoch+200):
-    train(epoch)
-    test(epoch)
-    scheduler.step()
