@@ -1,6 +1,6 @@
-# Train CIFAR10 with PyTorch
+# Using paraboloid neurons to train CIFAR10 with PyTorch
 
-I'm playing with [PyTorch](http://pytorch.org/) on the CIFAR10 dataset.
+Paraboloid neuron demonstration for [PyTorch](http://pytorch.org/) on the CIFAR10 dataset.
 
 ## Prerequisites
 - Python 3.9+
