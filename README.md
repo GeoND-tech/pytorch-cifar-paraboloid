@@ -16,10 +16,10 @@ python main.py --resume --lr=0.01
 ```
 
 ## Accuracy
-| Model             | Acc.        |
-| ----------------- | ----------- |
-| [DLA]           | 95.47%      |
-| [DLA_paraboloid]              | 92.64%      |
-| [DLA_paraconv]          | 93.02%      |
-| [DLA_paraconv_half]          | 93.62%      |
-| [DLA_paraconv_quarter]         | 93.75%      |
+| Model             | Training Loss        | Accuracy |
+| ----------------- | ----------- | |
+| [DLA]                   | 95.47%      | |
+| [DLA_paraboloid]        | 92.64%      | |
+| [DLA_paraconv]          | 93.02%      | |
+| [DLA_paraconv_half]     | 93.62%      | |
+| [DLA_paraconv_quarter]  | 93.75%      | |
