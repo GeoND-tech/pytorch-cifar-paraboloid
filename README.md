@@ -9,10 +9,19 @@ Paraboloid neuron demonstration for [PyTorch](http://pytorch.org/) on the CIFAR1
 pip install -r requirements.txt
 ```
 
-## Training
+## Evaluation and Training
 ```
-# Start training with: 
-python main.py
+# Evaluate the models by running: 
+
+python main.py --model dla --eval dla.pth
+
+python main.py --model dla_paraboloid --eval dla_paraboloid.pth
+
+python main.py --model dla_paraconv --eval dla_paraconv.pth
+
+python main.py --model dla_paraconv_half --eval dla_paraconv_half.pth
+
+python main.py --model dla_paraconv_quarter --eval dla_paraconv_quarter.pth
 
 # You can manually resume the training with: 
 python main.py --resume --lr=0.01
