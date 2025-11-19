@@ -2,9 +2,10 @@
 
 Paraboloid neuron demonstration for [PyTorch](http://pytorch.org/) on the CIFAR10 dataset.
 
-## Prerequisites
+## Requirements
 - Python 3.9+
-- PyTorch 2.5.1+
+# Install the rest of the requirements by running:
+pip install -r requirements.txt
 
 ## Training
 ```
