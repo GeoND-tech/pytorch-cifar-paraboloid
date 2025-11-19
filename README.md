@@ -16,7 +16,7 @@ python main.py --resume --lr=0.01
 ```
 
 ## Accuracy
-| Model             | Training Loss        | Accuracy |
+|** Model             | Training Loss        | Accuracy |**
 | ----------------- | ----------- | |
 | [DLA]                   | 95.47%      | |
 | [DLA_paraboloid]        | 92.64%      | |
