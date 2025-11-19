@@ -19,17 +19,18 @@ wget -i models.txt -P checkpoint
 # Evaluate the models by running: 
 
 python main.py --model dla --eval dla.pth
-
 python main.py --model dla_paraboloid --eval dla_paraboloid.pth
-
 python main.py --model dla_paraconv --eval dla_paraconv.pth
-
 python main.py --model dla_paraconv_half --eval dla_paraconv_half.pth
-
 python main.py --model dla_paraconv_quarter --eval dla_paraconv_quarter.pth
 
-# You can manually resume the training with: 
-python main.py --resume --lr=0.01
+# Train a model from scratch by ommitting the --eval argument, e.g.
+
+python main.py --model dla_paraconv_half
+
+# You can the training with:
+
+python main.py --model dla_paraconv_half --resume
 ```
 
 ## Training Loss and Accuracy
