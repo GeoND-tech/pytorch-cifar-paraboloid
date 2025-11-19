@@ -18,8 +18,8 @@ python main.py --resume --lr=0.01
 ## Accuracy
 |   Model           | Training Loss        | Accuracy |
 | ----------------- | -------------        | -------- |
-| [DLA]                   | 95.47%      | |
-| [DLA_paraboloid]        | 92.64%      | |
-| [DLA_paraconv]          | 93.02%      | |
-| [DLA_paraconv_half]     | 93.62%      | |
-| [DLA_paraconv_quarter]  | 93.75%      | |
+| [DLA] (400 epochs)                  | 0.001210       | 96.03% |
+| [DLA_paraboloid] (400 epochs)       | 0.000218       | 96.08% |
+| [DLA_paraconv] (400 epochs)         | 0.001263       | 96.11% |
+| [DLA_paraconv_half] (400 epochs)    | 0.001279       | 96.15% |
+| [DLA_paraconv_quarter] (200 epochs) | 0.001007       | 96.04% |
