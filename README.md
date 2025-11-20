@@ -28,7 +28,7 @@ python main.py --model dla_paraconv_quarter --eval dla_paraconv_quarter.pth
 
 python main.py --model dla_paraconv_half
 
-# You can ρεσθμε the training with:
+# You can resume the training with:
 
 python main.py --model dla_paraconv_half --resume
 ```
