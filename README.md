@@ -64,7 +64,7 @@ and replace it with:
 ```
 gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01),
 ```
-Again, ```ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01)``` is equivalent to ```ParaConv2d(3, 16)```. We include the assignments here to show which parameters can be changed to fine tune the ParaConv2d layer.
+Again, ```ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01)``` is equivalent to ```ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1)```. We include the assignments here to show which parameters can be changed to fine tune the ParaConv2d layer.
 
 In this case, we do not need to update the forward function, as we replaced an existing layer.
 
