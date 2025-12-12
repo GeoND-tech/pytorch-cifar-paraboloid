@@ -91,10 +91,7 @@ class DLA_paraconv(nn.Module):
         super(DLA_paraconv, self).__init__()
         self.base = nn.Sequential(
             #nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1, bias=False),
-            gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01), #BEST 96.09
-            #gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01, skip_input_grad = True),
-            #gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 10., lr_factor = 1., output_factor = 0.1, h_factor = 0.01, input_factor = 0.1, skip_input_grad = True),# 96.05-06
-            #gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01, input_factor = 0.1),
+            gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01),
             nn.BatchNorm2d(16),
             nn.ReLU(True)
         )
