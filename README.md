@@ -100,7 +100,7 @@ python main.py --model dla_paraconv_half
 python main.py --model dla_paraconv_half --resume
 ```
 
-## Training Loss and Accuracy
+## Training Loss and Accuracy of pretrained models
 |   Model           | Training Loss        | Accuracy |
 | ----------------- | -------------        | -------- |
 | [DLA] (400 epochs) - BASELINE       | 0.001210       | 96.03% |
@@ -108,3 +108,5 @@ python main.py --model dla_paraconv_half --resume
 | [DLA_paraconv] (400 epochs)         | 0.001263       | 96.11% |
 | [DLA_paraconv_half] (400 epochs)    | 0.001279       | 96.15% |
 | [DLA_paraconv_quarter] (200 epochs) | 0.001007       | 96.04% |
+
+Note that, due to numerical issues, the results may not always line up exactly.
