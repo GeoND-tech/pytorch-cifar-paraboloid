@@ -114,17 +114,7 @@ class DLA_paraconv(nn.Module):
         self.linear = nn.Linear(512, num_classes)
 
     def forward(self, x):
-    
-#        start = torch.cuda.Event(enable_timing=True)
-#        end = torch.cuda.Event(enable_timing=True)
-#        start.record()  
-        out = self.base(x)
-#        end.record()
-#        torch.cuda.synchronize()
-#        elapsed_time_ms = start.elapsed_time(end)
-#        print(elapsed_time_ms)
-        
-        
+        out = self.base(x)  
         out = self.layer1(out)
         out = self.layer2(out)
         out = self.layer3(out)
@@ -142,12 +132,7 @@ class DLA_paraconv_half(nn.Module):
     def __init__(self, block=BasicBlock, num_classes=10):
         super(DLA_paraconv_half, self).__init__()
         self.base = nn.Sequential(
-            #nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1, bias=False),
-            #gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01), # 96.09, 96.15
-            gpt.ParaConv2d(3, 8, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01), #BEST 96.19
-            #gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01, skip_input_grad = True),
-            #gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 10., lr_factor = 1., output_factor = 0.1, h_factor = 0.01, input_factor = 0.1, skip_input_grad = True),# 96.05-06
-            #gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01, input_factor = 0.1),
+            gpt.ParaConv2d(3, 8, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01), 
             nn.BatchNorm2d(8),
             nn.ReLU(True)
         )
@@ -170,16 +155,7 @@ class DLA_paraconv_half(nn.Module):
         self.linear = nn.Linear(512, num_classes)
 
     def forward(self, x):
-
-#        start = torch.cuda.Event(enable_timing=True)
-#        end = torch.cuda.Event(enable_timing=True)
-#        start.record()  
         out = self.base(x)
-#        end.record()
-#        torch.cuda.synchronize()
-#        elapsed_time_ms = start.elapsed_time(end)
-#        print(elapsed_time_ms)
-        
         out = self.layer1(out)
         out = self.layer2(out)
         out = self.layer3(out)
@@ -197,12 +173,7 @@ class DLA_paraconv_quarter(nn.Module):
     def __init__(self, block=BasicBlock, num_classes=10):
         super(DLA_paraconv_quarter, self).__init__()
         self.base = nn.Sequential(
-            #nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1, bias=False),
-            #gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01), 
             gpt.ParaConv2d(3, 4, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01), 
-            #gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01, skip_input_grad = True),
-            #gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 10., lr_factor = 1., output_factor = 0.1, h_factor = 0.01, input_factor = 0.1, skip_input_grad = True),
-            #gpt.ParaConv2d(3, 16, kernel_size=3, stride=1, padding=1, wd_factor = 2., lr_factor = 1., output_factor = 0.1, h_factor = 0.01, input_factor = 0.1),
             nn.BatchNorm2d(4),
             nn.ReLU(True)
         )
@@ -225,16 +196,7 @@ class DLA_paraconv_quarter(nn.Module):
         self.linear = nn.Linear(512, num_classes)
 
     def forward(self, x):
-
-#        start = torch.cuda.Event(enable_timing=True)
-#        end = torch.cuda.Event(enable_timing=True)
-#        start.record()  
         out = self.base(x)
-#        end.record()
-#        torch.cuda.synchronize()
-#        elapsed_time_ms = start.elapsed_time(end)
-#        print(elapsed_time_ms)
-        
         out = self.layer1(out)
         out = self.layer2(out)
         out = self.layer3(out)
