@@ -1,6 +1,6 @@
 # Using paraboloid neurons to train DLA models on CIFAR10 with PyTorch
 
-Paraboloid neuron demonstration for [PyTorch](http://pytorch.org/) on the CIFAR10 dataset.
+Paraboloid neuron demonstration of the [GeoND Library](https://geond.tech) for [PyTorch](http://pytorch.org/) on the CIFAR10 dataset.
 
 ## Requirements
 - Linux only
@@ -109,4 +109,4 @@ python main.py --model dla_paraconv_half --resume
 | [DLA_paraconv_half] (400 epochs)    | 0.001279       | 96.15% |
 | [DLA_paraconv_quarter] (200 epochs) | 0.001007       | 96.04% |
 
-Note that, due to numerical issues, the results may not always line up exactly.
+Note that, due to numerical issues and data augmentation, the results may not always line up exactly.
